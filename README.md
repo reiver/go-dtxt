@@ -15,13 +15,13 @@ Online documentation, which includes examples, can be found at: http://godoc.org
 
 Unicode inherited 5 deliminator **control code** characters from ASCII:
 
-| Symbol | Name                      | Alternative Name | Abbreviation | Hexadecimal | Decimal | Caret   | UTF-8        |
-|--------|---------------------------|------------------|--------------|-------------|---------|---------|--------------|
-| ␜      | File Separator            |                  | FS           |        0x1c |      28 | ``^\``  | `0b00011100` |
-| ␝      | Group Separator           | Table Separator  | GS           |        0x1d |      29 | ``^]``  | `0b00011101` |
-| ␞      | Row Separator             |                  | RS           |        0x1e |      30 | ``^^``  | `0b00011110` |
-| ␟      | Unit Separator            |                  | US           |        0x1f |      31 | ``^_``  | `0b00011111` |
-| ␠      | Space                     | Word Separator   | SP           |        0x20 |      32 | ``^```  | `0b00100000` |
+| Symbol | Name                      | Alternative Name | Abbreviation | Hexadecimal | Decimal | Caret     | UTF-8        |
+|--------|---------------------------|------------------|--------------|-------------|---------|-----------|--------------|
+| ␜      | File Separator            |                  | FS           |        0x1c |      28 | `` ^\ ``  | `0b00011100` |
+| ␝      | Group Separator           | Table Separator  | GS           |        0x1d |      29 | `` ^] ``  | `0b00011101` |
+| ␞      | Row Separator             |                  | RS           |        0x1e |      30 | `` ^^ ``  | `0b00011110` |
+| ␟      | Unit Separator            |                  | US           |        0x1f |      31 | `` ^_ ``  | `0b00011111` |
+| ␠      | Space                     | Word Separator   | SP           |        0x20 |      32 | `` ^` ``  | `0b00100000` |
 
 
 ## Tables
@@ -40,7 +40,7 @@ The aptly named **Escape** (**ESC**) **control code** character:
 
 | Name    | Abbreviation | Hexadecimal | Decimal | Caret   | UTF-8        |
 |---------|--------------|-------------|---------|---------|--------------|
-| Escape  | ESC          |        0x1b |      27 | ``^[``  | `0b00011011` |
+| Escape  | ESC          |        0x1b |      27 | `` ^[ ``  | `0b00011011` |
 
 
 An **ESC** chararacter is stuffed before any ***Unit Separator** (**US**), **Row Separator** (**RS**), **Group Separator** (**GS**), or **File Separator** (**FS**) that appears inside of a **unit**.
