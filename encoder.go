@@ -6,6 +6,8 @@ package dtxt
 
 type Encoder struct {
 	writer io.Writer
+	begun bool
+	ended bool
 }
 
 func EncoderWrap(writer io.Writer) Encoder {
@@ -14,7 +16,32 @@ func EncoderWrap(writer io.Writer) Encoder {
 	}
 }
 
+func (receiver *Encoder) Begin() error {
+	if nil == receiver {
+		return errNilReceiver
+	}
+
+	if receiver.begun {
+		return errBegun
+	}
+	if receiver.ended {
+		return errEnded
+	}
+
+	receiver.begun = true
+
+	return nil
+}
+
+
 func (receiver Encoder) EncodeRow(values ...any) error {
+
+	if !receiver.begun {
+		return errNotBegun
+	}
+	if receiver.ended {
+		return errEnded
+	}
 
 	var writer io.Writer
 	{
@@ -46,6 +73,13 @@ func (receiver Encoder) EncodeRow(values ...any) error {
 
 func (receiver Encoder) encodeUnit(value any) error {
 
+	if !receiver.begun {
+		return errNotBegun
+	}
+	if receiver.ended {
+		return errEnded
+	}
+
 	var writer io.Writer
 	{
 		writer = receiver.writer
@@ -75,7 +109,17 @@ func (receiver Encoder) encodeUnit(value any) error {
 	return nil
 }
 
-func (receiver Encoder) Flush() error {
+func (receiver *Encoder) End() error {
+	if nil == receiver {
+		return errNilReceiver
+	}
+
+	if !receiver.begun {
+		return errNotBegun
+	}
+	if receiver.ended {
+		return errEnded
+	}
 
 	var writer io.Writer
 	{
@@ -96,4 +140,3 @@ func (receiver Encoder) Flush() error {
 
 	return nil
 }
-
