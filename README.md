@@ -30,19 +30,25 @@ var encoder dtxt.Encoder = dtxt.EncoderWrap(writer)
 defer encoder.Flush()
 
 // row 1
-err := encode.EncodeRow("ONE", '۱', "1", "Ⅰ")
+err := encode.EncodeRow("ONCE", '۱', "1", "Ⅰ", "یکی")
 
 // ...
 
 // row 2
-err := encode.EncodeRow("TWO", '۲', "2", "Ⅱ")
+err := encode.EncodeRow("TWICE", '۲', "2", "Ⅱ". "دو")
 
 // ...
 
 // row 3
-err := encode.EncodeRow("THREE", '۳', "3", "Ⅲ")
+err := encode.EncodeRow("THRICE", '۳', "3", "Ⅲ", "سه")
 
 // ...
+
+// row 3
+err := encode.EncodeRow("FOURCE", '۴', "3", "Ⅳ", "چهار")
+
+// ...
+
 
 ```
 
