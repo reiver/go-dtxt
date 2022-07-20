@@ -26,6 +26,7 @@ var writer io.Writer //@TODO: set to wherever you want the encoded **ASCII delim
 // ...
 
 var encoder dtxt.Encoder = dtxt.EncoderWrap(writer)
+defer encoder.Flush()
 
 // row 1
 err := encode.EncodeRow("ONE", '۱', "1", "Ⅰ")
@@ -37,6 +38,7 @@ err := encode.EncodeRow("TWO", '۲', "2", "Ⅱ")
 
 // ...
 
+// row 3
 err := encode.EncodeRow("THREE", '۳', "3", "Ⅲ")
 
 // ...
