@@ -27,7 +27,14 @@ var writer io.Writer //@TODO: set to wherever you want the encoded ASCII Delimit
 // ...
 
 var encoder dtxt.Encoder = dtxt.EncoderWrap(writer)
-defer encoder.Flush()
+
+err := encoder.Begin()
+
+// ...
+
+defer encoder.End()
+
+// ...
 
 // row 1
 err := encode.EncodeRow("ONCE", '۱', "1", "Ⅰ", "یکی")
