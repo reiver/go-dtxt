@@ -13,6 +13,36 @@ Online documentation, which includes examples, can be found at: http://godoc.org
 
 [![GoDoc](https://godoc.org/github.com/reiver/go-dtxt?status.svg)](https://godoc.org/github.com/reiver/go-dtxt)
 
+## Encoding Example
+
+This is a basic example of how to encode **table** or **spreadsheet** data into **ASCII delimited text** using this package:
+```go
+import "github.com/reiver/go-dtxt"
+
+// ...
+
+var writer io.Writer //@TODO: set to wherever you want the encoded **ASCII delimited text** data to go.
+
+// ...
+
+var encoder dtxt.Encoder = dtxt.EncoderWrap(writer)
+
+// row 1
+err := encode.EncodeRow("ONE", '۱', "1", "Ⅰ")
+
+// ...
+
+// row 2
+err := encode.EncodeRow("TWO", '۲', "2", "Ⅱ")
+
+// ...
+
+err := encode.EncodeRow("THREE", '۳', "3", "Ⅲ")
+
+// ...
+
+```
+
 ## Deliminators
 
 Unicode inherited 5 deliminator **control code** characters from ASCII:
