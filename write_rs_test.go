@@ -33,7 +33,7 @@ func TestWriteRS(t *testing.T) {
 	}
 
 	{
-		var expected byte = RS
+		var expected byte = rs
 		var actual   byte = buffer.Bytes()[0]
 
 		if expected != actual {

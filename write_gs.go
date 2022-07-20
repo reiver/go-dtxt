@@ -5,5 +5,5 @@ import (
 )
 
 func writeGS(writer io.Writer) error {
-	return writeByte(writer, GS)
+	return writeByte(writer, gs)
 }

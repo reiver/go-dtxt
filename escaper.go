@@ -50,7 +50,7 @@ func (receiver escaper) EncodeByte(b byte) error {
 
 	{
 		switch b {
-		case ESC,FS,GS,RS,US:
+		case esc,fs,gs,rs,us:
 			err := writeESC(writer)
 			if nil != err {
 				return err
@@ -102,7 +102,7 @@ func (receiver escaper) EncodeRune(r rune) error {
 
 	{
 		switch r {
-		case ESC,FS,GS,RS,US:
+		case esc,fs,gs,rs,us:
 			err := writeESC(writer)
 			if nil != err {
 				return err

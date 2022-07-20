@@ -1,9 +1,9 @@
 package dtxt
 
 const (
-	ESC = 27
-	FS  = 28
-	GS  = 29
-	RS  = 30
-	US  = 31
+	esc = 27
+	fs  = 28
+	gs  = 29
+	rs  = 30
+	us  = 31
 )

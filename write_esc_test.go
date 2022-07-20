@@ -33,7 +33,7 @@ func TestWriteESC(t *testing.T) {
 	}
 
 	{
-		var expected byte = ESC
+		var expected byte = esc
 		var actual   byte = buffer.Bytes()[0]
 
 		if expected != actual {
