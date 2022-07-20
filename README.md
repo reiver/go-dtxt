@@ -5,7 +5,8 @@ Package **dtxt** implements encoding and decoding of **ASCII delimited text**, f
 **ASCII delimited text** is similar to CSV, TSV, and other table & spreadsheet data formats.
 Except that **ASCII delimited text** uses some of the deliminator **control code** characters that Unicode inherited from ASCII.
 
-**ASCII delimited text** could also probabl be validly called **Unicode delimited text**.
+**ASCII delimited text** could also probably be validly called **Unicode delimited text**.
+Especially when Unicode is encoded as UTF-8.
 
 ## Documention
 
@@ -72,8 +73,8 @@ The answer is that — Unicode inherited a **control code** character for **esca
 The aptly named **Escape** (**ESC**) **control code** character:
 
 
-| Name    | Abbreviation | Hexadecimal | Decimal | Caret   | UTF-8        |
-|---------|--------------|-------------|---------|---------|--------------|
+| Name    | Abbreviation | Hexadecimal | Decimal | Caret     | UTF-8        |
+|---------|--------------|-------------|---------|-----------|--------------|
 | Escape  | ESC          |        0x1b |      27 | `` ^[ ``  | `0b00011011` |
 
 
