@@ -16,7 +16,7 @@ Online documentation, which includes examples, can be found at: http://godoc.org
 
 ## Encoding Example
 
-This is a basic example of how to encode **table** or **spreadsheet** data into **ASCII delimited text** using this package:
+This is a basic example of how to encode **tabular** data into **ASCII delimited text** using this package:
 ```go
 import "github.com/reiver/go-dtxt"
 
@@ -58,6 +58,42 @@ err := encode.EncodeRow("FOURCE", '۴', "3", "Ⅳ", "چهار")
 
 
 ```
+
+## Decoding Example
+
+This is a basic example of how to dencode **tabular** data from **ASCII delimited text** using this package.
+
+In this example it is known ahead of time how many columns there are in the data.
+
+```go
+
+import "github.com/reiver/go-dtxt"
+
+// ...
+
+var reader io.Reader //@TODO: set to wherever you want the encoded ASCII Delimited Text data to come from.
+
+// ...
+
+var decoder dtxt.Decoder = dtxt.WrapDecoder(reader)
+
+// ...
+
+for {
+	var key string
+	var value string
+	
+	err := decoder.DecodeRow(&key, &value)
+	if dtxt.GS == err {
+		break
+	}
+	if nil != err {
+		return err
+	}
+}
+
+```
+
 
 ## Deliminators
 
