@@ -22,7 +22,7 @@ import "github.com/reiver/go-dtxt"
 
 // ...
 
-var writer io.Writer //@TODO: set to wherever you want the encoded **ASCII delimited text** data to go.
+var writer io.Writer //@TODO: set to wherever you want the encoded ASCII Delimited Text data to go.
 
 // ...
 
