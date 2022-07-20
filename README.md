@@ -5,6 +5,8 @@ Package **dtxt** implements encoding and decoding of **ASCII delimited text**, f
 **ASCII delimited text** is similar to CSV, TSV, and other table & spreadsheet data formats.
 Except that **ASCII delimited text** uses some of the deliminator **control code** characters that Unicode inherited from ASCII.
 
+**ASCII delimited text** could also probabl be validly called **Unicode delimited text**.
+
 ## Documention
 
 Online documentation, which includes examples, can be found at: http://godoc.org/github.com/reiver/go-dtxt
@@ -43,4 +45,4 @@ The aptly named **Escape** (**ESC**) **control code** character:
 | Escape  | ESC          |        0x1b |      27 | `` ^[ ``  | `0b00011011` |
 
 
-An **ESC** chararacter is stuffed before any ***Unit Separator** (**US**), **Row Separator** (**RS**), **Group Separator** (**GS**), or **File Separator** (**FS**) that appears inside of a **unit**.
+An **ESC** chararacter is stuffed before any **Unit Separator** (**US**), **Row Separator** (**RS**), **Group Separator** (**GS**), or **File Separator** (**FS**) that appears inside of a **unit**.
