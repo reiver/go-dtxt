@@ -7,6 +7,7 @@ import (
 const (
 	errBegun            = fck.Error("begun")
 	errEnded            = fck.Error("ended")
+	errNilReader        = fck.Error("nil reader")
 	errNilReceiver      = fck.Error("nil receiver")
 	errNilTextMarshaler = fck.Error("nil encoding.TextMarshaler")
 	errNilWriter        = fck.Error("nil writer")
