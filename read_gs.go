@@ -1,12 +1,10 @@
 package dtxt
 
 import (
-	"github.com/reiver/go-fck"
-
 	"io"
 )
 
-func readerGS(reader io.Reader) error {
+func readGS(reader io.Reader) error {
 
 	var r rune
 	{
@@ -23,7 +21,7 @@ func readerGS(reader io.Reader) error {
 		actual := r
 
 		if expected != actual {
-			return fck.Errorf("expected to read a %d control code character (i.e., a Group Separator (GS) control code character) but actually got %d", expected, actual)
+			return errNotGS
 		}
 	}
 
