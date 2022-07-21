@@ -33,7 +33,7 @@ func (receiver escaper) Encode(value any) error {
 	case rune:
 		return receiver.EncodeRune(casted)
 	default:
-		return fck.Errorf("cannot escape escape-encode value of type %T", value)
+		return fck.Errorf("cannot escape-encode value of type %T", value)
 	}
 }
 
