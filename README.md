@@ -102,15 +102,114 @@ Unicode inherited 5 deliminator **control code** characters from ASCII:
 | Symbol | Name                      | Alternative Name | Abbreviation | Hexadecimal | Decimal | Caret     | UTF-8        |
 |--------|---------------------------|------------------|--------------|-------------|---------|-----------|--------------|
 | ␜      | File Separator            |                  | FS           |        0x1c |      28 | `` ^\ ``  | `0b00011100` |
-| ␝      | Group Separator           | Table Separator  | GS           |        0x1d |      29 | `` ^] ``  | `0b00011101` |
-| ␞      | Row Separator             |                  | RS           |        0x1e |      30 | `` ^^ ``  | `0b00011110` |
-| ␟      | Unit Separator            |                  | US           |        0x1f |      31 | `` ^_ ``  | `0b00011111` |
+| ␝      | Group Separator           | Table Terminator | GS           |        0x1d |      29 | `` ^] ``  | `0b00011101` |
+| ␞      | Row Separator             | Row Terminator   | RS           |        0x1e |      30 | `` ^^ ``  | `0b00011110` |
+| ␟      | Unit Separator            | Field Terminator | US           |        0x1f |      31 | `` ^_ ``  | `0b00011111` |
 | ␠      | Space                     | Word Separator   | SP           |        0x20 |      32 | `` ^` ``  | `0b00100000` |
 
 
-## Tables
+## Table Row Format
 
-**Unit Separator** (**US**) and **Row Separator** (**RS**) can be used to construct a table.
+**Unit Separator** (**US**) and **Row Separator** (**RS**) can be used to construct a table row.
+
+For example, if we wanted to have a table row with 3 fields: “`joe`”, “`blow`”, and “`root beer`”. I.e,. —
+ 
+| | | |
+|-|-|-|
+| joe | blow | root beer |
+ 
+
+Then the result would be this:
+```go
+const US = 0x1f
+const RS = 0x1e
+
+[]byte{
+	'j','o','e', 
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'b','l','o','w',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'r','o','o','t',' ','b','e','e','r',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+}
+```
+
+(Note this is just a single row.
+And _not_ a whole table.
+A whole table would have a `GS` control code character at the end of it.)
+
+⚠️ Notice that we are using the `US` control code characters in the Unix/Linux style — as a field **terminator** (and _not_ just a field **separator**).
+I.e., the last field gets a `US` after it too.
+
+⚠️ Notice also that we are using the `RS` control code character in the Unix/Linux style too — as a row **terminator** (and _not_ just a row **separator**).
+I.e., the last row gets a `RS` after it too.
+
+## Table Format
+
+Let's make it more obvious how `RS` is used by showing a whole table encoded (and not just a row).
+Let's encode this table:
+
+| | | |
+|-|-|-|
+| joe | blow | root beer |
+| john | doe | caramel apple |
+| jane | doe | cotton candy |
+
+```go
+const US = 0x1f
+const RS = 0x1e
+const GS = 0x1d
+
+[]byte{
+	'j','o','e', 
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'b','l','o','w',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'r','o','o','t',' ','b','e','e','r',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+
+
+
+	'j','o','h','n',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'd','o','e',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'c','a','r','a','m','e','l',' ','a','p','p','l','e',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+
+
+
+	'j','a','n','e',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'd','o','e',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'c','o','t','t','o','n',' ','c','a','n','d','y',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+
+
+
+	GS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Table Terminator
+}
+```
+
+⚠️ Notice that we are using the `GS` control code characters in the Unix/Linux style — as a table **terminator** (and _not_ just a table **separator**).
+I.e., the last rows gets a `GS` after it.
 
 ## Escaping
 
