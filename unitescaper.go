@@ -9,17 +9,18 @@ import (
 	"unsafe"
 )
 
-type escaper struct {
+type unitescaper struct {
 	writer io.Writer
 }
 
-func escaperWrap(writer io.Writer) escaper {
-	return escaper{
+func unitescaperWrap(writer io.Writer) unitescaper {
+	return unitescaper{
 		writer:writer,
 	}
 }
 
-func (receiver escaper) Encode(value any) error {
+// Encode encodes a unit (i.e., a field) that is gives as a `encoding.TextMarshaler:`, `[]rune`, `string`, or `[]byte`.
+func (receiver unitescaper) Encode(value any) error {
 
 	switch casted := value.(type) {
 	case encoding.TextMarshaler:
@@ -30,14 +31,15 @@ func (receiver escaper) Encode(value any) error {
 		return receiver.EncodeString(casted)
 	case []byte:
 		return receiver.EncodeBytes(casted)
-	case rune:
-		return receiver.EncodeRune(casted)
 	default:
 		return fck.Errorf("cannot escape-encode value of type %T", value)
 	}
 }
 
-func (receiver escaper) EncodeByte(b byte) error {
+// encodeByte does NOT  encode a unit (i.e., a field).
+//
+// encodeByte is a helper method used by other methods to encode a single byte.
+func (receiver unitescaper) encodeByte(b byte) error {
 
 	var writer io.Writer
 	{
@@ -68,7 +70,8 @@ func (receiver escaper) EncodeByte(b byte) error {
 	return nil
 }
 
-func (receiver escaper) EncodeBytes(value []byte) error {
+// EncodeBytes encodes a unit (i.e., a field) that is gives as a `[]byte`.
+func (receiver unitescaper) EncodeBytes(value []byte) error {
 
 	var writer io.Writer
 	{
@@ -80,7 +83,14 @@ func (receiver escaper) EncodeBytes(value []byte) error {
 	}
 
 	for _, b := range value {
-		err := receiver.EncodeByte(b)
+		err := receiver.encodeByte(b)
+		if nil != err {
+			return err
+		}
+	}
+
+	{
+		err := writeUS(writer)
 		if nil != err {
 			return err
 		}
@@ -89,7 +99,10 @@ func (receiver escaper) EncodeBytes(value []byte) error {
 	return nil
 }
 
-func (receiver escaper) EncodeRune(r rune) error {
+// encodeRune does NOT  encode a unit (i.e., a field).
+//
+// encodeRune is a helper method used by other methods to encode a single rune.
+func (receiver unitescaper) encodeRune(r rune) error {
 
 	var writer io.Writer
 	{
@@ -120,7 +133,8 @@ func (receiver escaper) EncodeRune(r rune) error {
 	return nil
 }
 
-func (receiver escaper) EncodeRunes(value []rune) error {
+// EncodeRunes encodes a unit (i.e., a field) that is gives as a `[]rune`.
+func (receiver unitescaper) EncodeRunes(value []rune) error {
 
 	var writer io.Writer
 	{
@@ -132,7 +146,14 @@ func (receiver escaper) EncodeRunes(value []rune) error {
 	}
 
 	for _, r := range value {
-		err := receiver.EncodeRune(r)
+		err := receiver.encodeRune(r)
+		if nil != err {
+			return err
+		}
+	}
+
+	{
+		err := writeUS(writer)
 		if nil != err {
 			return err
 		}
@@ -141,7 +162,8 @@ func (receiver escaper) EncodeRunes(value []rune) error {
 	return nil
 }
 
-func (receiver escaper) EncodeString(value string) error {
+// EncodeString encodes a unit (i.e., a field) that is gives as a `string`.
+func (receiver unitescaper) EncodeString(value string) error {
 
 	var p []byte
 	{
@@ -152,7 +174,8 @@ func (receiver escaper) EncodeString(value string) error {
 
 }
 
-func (receiver escaper) EncodeTextMarshaler(value encoding.TextMarshaler) error {
+// EncodeTextMarshaler encodes a unit (i.e., a field) that is gives as a `encoding.TextMarshaler`.
+func (receiver unitescaper) EncodeTextMarshaler(value encoding.TextMarshaler) error {
 
 	if nil == value {
 		return errNilTextMarshaler

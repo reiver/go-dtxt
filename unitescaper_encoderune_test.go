@@ -7,294 +7,258 @@ import (
 	"testing"
 )
 
-func TestEscaper_EncodeRunes(t *testing.T) {
+func TestUnitescaper_EncodeRune(t *testing.T) {
 
 	tests := []struct {
-		Runes []rune
+		Rune rune
 		Expected []byte
 	}{
 		{
-			Runes:        []rune{0},
+			Rune:                0,
 			Expected: []byte("\x00"),
 		},
 		{
-			Runes:        []rune{1},
+			Rune:                1,
 			Expected: []byte("\x01"),
 		},
 		{
-			Runes:        []rune{2},
+			Rune:                2,
 			Expected: []byte("\x02"),
 		},
 		{
-			Runes:        []rune{3},
+			Rune:                3,
 			Expected: []byte("\x03"),
 		},
 		{
-			Runes:        []rune{4},
+			Rune:                4,
 			Expected: []byte("\x04"),
 		},
 		{
-			Runes:        []rune{5},
+			Rune:                5,
 			Expected: []byte("\x05"),
 		},
 		{
-			Runes:        []rune{6},
+			Rune:                6,
 			Expected: []byte("\x06"),
 		},
 		{
-			Runes:        []rune{7},
+			Rune:                7,
 			Expected: []byte("\x07"),
 		},
 		{
-			Runes:        []rune{8},
+			Rune:                8,
 			Expected: []byte("\x08"),
 		},
 		{
-			Runes:        []rune{9},
+			Rune:                9,
 			Expected: []byte("\x09"),
 		},
 		{
-			Runes:       []rune{10},
+			Rune:               10,
 			Expected: []byte("\x0a"),
 		},
 		{
-			Runes:       []rune{11},
+			Rune:               11,
 			Expected: []byte("\x0b"),
 		},
 		{
-			Runes:       []rune{12},
+			Rune:               12,
 			Expected: []byte("\x0c"),
 		},
 		{
-			Runes:       []rune{13},
+			Rune:               13,
 			Expected: []byte("\x0d"),
 		},
 		{
-			Runes:       []rune{14},
+			Rune:               14,
 			Expected: []byte("\x0e"),
 		},
 		{
-			Runes:       []rune{15},
+			Rune:               15,
 			Expected: []byte("\x0f"),
 		},
 		{
-			Runes:       []rune{16},
+			Rune:               16,
 			Expected: []byte("\x10"),
 		},
 		{
-			Runes:       []rune{17},
+			Rune:               17,
 			Expected: []byte("\x11"),
 		},
 		{
-			Runes:       []rune{18},
+			Rune:               18,
 			Expected: []byte("\x12"),
 		},
 		{
-			Runes:       []rune{19},
+			Rune:               19,
 			Expected: []byte("\x13"),
 		},
 		{
-			Runes:       []rune{20},
+			Rune:               20,
 			Expected: []byte("\x14"),
 		},
 		{
-			Runes:       []rune{21},
+			Rune:               21,
 			Expected: []byte("\x15"),
 		},
 		{
-			Runes:       []rune{22},
+			Rune:               22,
 			Expected: []byte("\x16"),
 		},
 		{
-			Runes:       []rune{23},
+			Rune:               23,
 			Expected: []byte("\x17"),
 		},
 		{
-			Runes:       []rune{24},
+			Rune:               24,
 			Expected: []byte("\x18"),
 		},
 		{
-			Runes:       []rune{25},
+			Rune:               25,
 			Expected: []byte("\x19"),
 		},
 		{
-			Runes:       []rune{26},
+			Rune:               26,
 			Expected: []byte("\x1a"),
 		},
 
 
 
 		{
-			Runes:           []rune{27},  //     ESC
+			Rune:                   27,   //     ESC
 			Expected: []byte("\x1b\x1b"), // ESC ESC
 		},
 		{
-			Runes:           []rune{28},  //     FS
+			Rune:                   28,   //     FS
 			Expected: []byte("\x1b\x1c"), // ESC FS
 		},
 		{
-			Runes:           []rune{29},  //     GS
+			Rune:                   29,   //     GS
 			Expected: []byte("\x1b\x1d"), // ESC GS
 		},
 		{
-			Runes:           []rune{30},  //     RS
+			Rune:                   30,   //     RS
 			Expected: []byte("\x1b\x1e"), // ESC RS
 		},
 		{
-			Runes:           []rune{31},  //     US
+			Rune:                   31,   //     US
 			Expected: []byte("\x1b\x1f"), // ESC US
 		},
 
 
 
 		{
-			Runes:       []rune{32},
+			Rune:               32,
 			Expected: []byte("\x20"),
 		},
 		{
-			Runes:       []rune{33},
+			Rune:               33,
 			Expected: []byte("\x21"),
 		},
 
 
 
 		{
-			//                 NUL SOH STX ETX EOT ENQ ACK BEL  BS  HT  LF  VT  FF  CR  SO  SI DLE DC1 DC2 DC3 DC4 NAK SYN ETB CAN  EM SUB     ESC      FS      GS      RS      FS  SP
-			Runes:    []rune{    0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26,     27,     28,     29,     30,     31, 32, 33, 34, 35},
-			Expected: []byte("\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1b\x1b\x1c\x1b\x1d\x1b\x1e\x1b\x1f\x20\x21\x22\x23"),
-		},
-
-
-
-		{
-			Runes:    []rune{'1'},
+			Rune:            '1',
 			Expected: []byte("1"),
 		},
 		{
-			Runes:    []rune{'2'},
+			Rune:            '2',
 			Expected: []byte("2"),
 		},
 		{
-			Runes:    []rune{'3'},
+			Rune:            '3',
 			Expected: []byte("3"),
 		},
 		{
-			Runes:    []rune{'4'},
+			Rune:            '4',
 			Expected: []byte("4"),
 		},
 		{
-			Runes:    []rune{'5'},
+			Rune:            '5',
 			Expected: []byte("5"),
 		},
 
 
 
 		{
-			Runes:    []rune{'1','2','3','4','5'},
-			Expected: []byte("12345"),
-		},
-
-
-
-		{
-			Runes:    []rune{'A'},
+			Rune:            'A',
 			Expected: []byte("A"),
 		},
 		{
-			Runes:    []rune{'B'},
+			Rune:            'B',
 			Expected: []byte("B"),
 		},
 		{
-			Runes:    []rune{'C'},
+			Rune:            'C',
 			Expected: []byte("C"),
 		},
 		{
-			Runes:    []rune{'D'},
+			Rune:            'D',
 			Expected: []byte("D"),
 		},
 		{
-			Runes:    []rune{'E'},
+			Rune:            'E',
 			Expected: []byte("E"),
 		},
 
 
 
 		{
-			Runes:    []rune{'A','B','C','D','E'},
-			Expected: []byte("ABCDE"),
-		},
-
-
-
-		{
-			Runes:    []rune{'a'},
+			Rune:            'a',
 			Expected: []byte("a"),
 		},
 		{
-			Runes:    []rune{'b'},
+			Rune:            'b',
 			Expected: []byte("b"),
 		},
 		{
-			Runes:    []rune{'c'},
+			Rune:            'c',
 			Expected: []byte("c"),
 		},
 		{
-			Runes:    []rune{'d'},
+			Rune:            'd',
 			Expected: []byte("d"),
 		},
 		{
-			Runes:    []rune{'e'},
+			Rune:            'e',
 			Expected: []byte("e"),
 		},
 
 
 
 		{
-			Runes:    []rune{'a','b','c','d','e'},
-			Expected: []byte("abcde"),
-		},
-
-
-
-		{
-			Runes:    []rune{'۱'},
+			Rune:            '۱',
 			Expected: []byte("۱"),
 		},
 		{
-			Runes:    []rune{'۲'},
+			Rune:            '۲',
 			Expected: []byte("۲"),
 		},
 		{
-			Runes:    []rune{'۳'},
+			Rune:            '۳',
 			Expected: []byte("۳"),
 		},
 		{
-			Runes:    []rune{'۴'},
+			Rune:            '۴',
 			Expected: []byte("۴"),
 		},
 		{
-			Runes:    []rune{'۵'},
+			Rune:            '۵',
 			Expected: []byte("۵"),
 		},
 
 
 
 		{
-			Runes:    []rune{'۱','۲','۳','۴','۵'},
-			Expected: []byte("۱۲۳۴۵"),
-		},
-
-
-
-		{
-			Runes:    []rune{'≡'},
+			Rune:            '≡',
 			Expected: []byte("≡"),
 		},
 
 
 
 		{
-			Runes:    []rune{'🙂'},
+			Rune:            '🙂',
 			Expected: []byte("🙂"),
 		},
 	}
@@ -304,14 +268,14 @@ func TestEscaper_EncodeRunes(t *testing.T) {
 		var buffer bytes.Buffer
 		var writer io.Writer = &buffer
 
-		var esc escaper = escaperWrap(writer)
+		var esc unitescaper = unitescaperWrap(writer)
 
-		err := esc.EncodeRunes(test.Runes)
+		err := esc.encodeRune(test.Rune)
 
 		if nil != err {
 			t.Errorf("For test #%d, did not expect an error but actually got one.", testNumber)
 			t.Logf("ERROR: (%T) %s", err, err)
-			t.Logf("RUNES: %q", string(test.Runes))
+			t.Logf("RUNE: %q", string(test.Rune))
 			continue
 		}
 
@@ -335,7 +299,7 @@ func TestEscaper_EncodeRunes(t *testing.T) {
 				t.Errorf("For test #%d, the actual bytes written is not what was expected.", testNumber)
 				t.Logf("EXPECTED: %q", string(expected))
 				t.Logf("ACTUAL:   %q", string(actual))
-				t.Logf("RUNES: %q", string(test.Runes))
+				t.Logf("RUNE: %q", string(test.Rune))
 				continue
 			}
 		}
