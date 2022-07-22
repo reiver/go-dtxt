@@ -91,16 +91,9 @@ func (receiver Encoder) encodeUnit(value any) error {
 	}
 
 	{
-		var esc escaper = escaperWrap(writer)
+		var esc unitescaper = unitescaperWrap(writer)
 
 		err := esc.Encode(value)
-		if nil != err {
-			return err
-		}
-	}
-
-	{
-		err := writeUS(writer)
 		if nil != err {
 			return err
 		}

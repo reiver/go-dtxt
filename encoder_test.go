@@ -19,10 +19,10 @@ func TestEncode(t *testing.T) {
 	}{
 		{
 			Rows: [][]any{
-				[]any{"ONE",   "once",   '۱', "1", "Ⅰ", "."},
-				[]any{"TWO",   "twice",  '۲', "2", "Ⅱ", ".."},
-				[]any{"THREE", "thrice", '۳', "3", "Ⅲ", "..."},
-				[]any{"FOUR",  "fource", '۴', "4", "Ⅳ", "...."},
+				[]any{"ONE",   "once",   []rune{'۱'}, "1", "Ⅰ", []byte(".")},
+				[]any{"TWO",   "twice",  []rune{'۲'}, "2", "Ⅱ", []byte("..")},
+				[]any{"THREE", "thrice", []rune{'۳'}, "3", "Ⅲ", []byte("...")},
+				[]any{"FOUR",  "fource", []rune{'۴'}, "4", "Ⅳ", []byte("....")},
 			},
 			Expected:
 				[]byte(
