@@ -5,8 +5,13 @@ import (
 )
 
 const (
+	GS = fck.Error("GS") // ‘GS’ represents the end of a table. ‘GS’ means ‘Group Separator’. ‘GS’ also sometimes called a ‘Table Separator’.
+)
+
+const (
 	errBegun            = fck.Error("begun")
 	errEnded            = fck.Error("ended")
+	errNilDestination   = fck.Error("nil destination")
 	errNilReader        = fck.Error("nil reader")
 	errNilReceiver      = fck.Error("nil receiver")
 	errNilTextMarshaler = fck.Error("nil encoding.TextMarshaler")
