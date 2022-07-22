@@ -134,7 +134,7 @@ const RS = 0x1e
 	'r','o','o','t',' ','b','e','e','r',
 	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
 	
-	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
 }
 ```
 
@@ -160,9 +160,9 @@ Let's encode this table:
 | jane | doe | cotton candy |
 
 ```go
-const US = 0x1f
-const RS = 0x1e
-const GS = 0x1d
+const GS = 0x1d // table terminator
+const RS = 0x1e // row terminator
+const US = 0x1f // field terminator
 
 []byte{
 	'j','o','e', 
@@ -174,7 +174,7 @@ const GS = 0x1d
 	'r','o','o','t',' ','b','e','e','r',
 	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
 	
-	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
 
 
 
@@ -187,7 +187,7 @@ const GS = 0x1d
 	'c','a','r','a','m','e','l',' ','a','p','p','l','e',
 	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
 	
-	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
 
 
 
@@ -200,11 +200,11 @@ const GS = 0x1d
 	'c','o','t','t','o','n',' ','c','a','n','d','y',
 	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
 	
-	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
 
 
 
-	GS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Table Terminator
+	GS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Table Terminator
 }
 ```
 
@@ -226,4 +226,99 @@ The aptly named **Escape** (**ESC**) **control code** character:
 | Escape  | ESC          |        0x1b |      27 | `` ^[ ``  | `0b00011011` |
 
 
-An **ESC** chararacter is stuffed before any **Unit Separator** (**US**), **Row Separator** (**RS**), **Group Separator** (**GS**), or **File Separator** (**FS**) that appears inside of a **unit**.
+An **ESC** chararacter is stuffed before any **Escape** (**ESC**), **Unit Separator** (**US**), **Row Separator** (**RS**), **Group Separator** (**GS**), or **File Separator** (**FS**) that appears inside of a **unit**.
+
+Here is an example.
+
+Let's say that we want to encode this table:
+
+| | | |
+|-|-|-|
+| `[]byte{'E','S','C'}` | `[]byte{ESC}` | `[]byte{'e','s','c','a','p','e'}` |
+| `[]byte{'F','S'}`     | `[]byte{FS}`  | `[]byte{'f','i','l','e',' ','t','e','r','m','i','n','a','t','o','r'}` |
+| `[]byte{'G','S'}`     | `[]byte{GS}`  | `[]byte{'t','a','b','l','e',' ','t','e','r','m','i','n','a','t','o','r'}` |
+| `[]byte{'R','S'}`     | `[]byte{RS}`  | `[]byte{'r','o','w',' ','t','e','r','m','i','n','a','t','o','r'}` |
+| `[]byte{'U','S'}`     | `[]byte{US}`  | `[]byte{'f','i','e','l','d',' ','t','e','r','m','i','n','a','t','o','r'}` |
+
+We would get:
+```go
+const ESC = 0x1b // escape
+const FS  = 0x1c // file terminator
+const GS  = 0x1d // table terminator
+const RS  = 0x1e // row terminator
+const US  = 0x1f // field terminator
+
+[]byte{
+	'E','S','C',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	ESC, // ⇚⇚⇚⇚⇚ Escape. Next character will be treated as data regardless of whether it is a control code character or not.
+	ESC,
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'e','s','c','a','p','e',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+
+
+
+	'F','S',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	ESC, // ⇚⇚⇚⇚⇚ Escape. Next character will be treated as data regardless of whether it is a control code character or not.
+	FS,
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'f','i','l','e',' ','t','e','r','m','i','n','a','t','o','r',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+
+
+
+	'G','S',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	ESC, // ⇚⇚⇚⇚⇚ Escape. Next character will be treated as data regardless of whether it is a control code character or not.
+	GS,
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	't','a','b','l','e',' ','t','e','r','m','i','n','a','t','o','r',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+
+
+
+	'R','S',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	ESC, // ⇚⇚⇚⇚⇚ Escape. Next character will be treated as data regardless of whether it is a control code character or not.
+	RS,
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'r','o','w',' ','t','e','r','m','i','n','a','t','o','r',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+
+
+
+	'U','S',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	ESC, // ⇚⇚⇚⇚⇚ Escape. Next character will be treated as data regardless of whether it is a control code character or not.
+	US,
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	'f','i','e','l','d',' ','t','e','r','m','i','n','a','t','o','r',
+	US, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Field Terminator
+	
+	RS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Row Terminator
+	
+	
+	
+	GS, // ⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚⇚ Table Terminator
+}
+```
